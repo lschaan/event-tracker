@@ -20,22 +20,51 @@ public class EventTrackerService {
         this.realmStockClient = realmStockClient;
     }
 
-    public List<RealmDTO> getClosingAvaliableRealms() {
+    public List<RealmDTO> getClosingRealms() {
         List<RealmDTO> realms = getRealms();
-        List<RealmDTO> closingRealms = getClosingRealms(realms);
+        List<RealmDTO> openRealms = getOpenRealms(realms);
+        List<RealmDTO> closingRealms = getClosingRealms(openRealms);
         List<RealmDTO> closingAvaliableRealms = getAvailableRealms(closingRealms);
 
+        closingAvaliableRealms.sort(Comparator.comparing(RealmDTO::getPlayers));
         closingAvaliableRealms.sort(Comparator.comparing(RealmDTO::getRemainingEvents));
         return closingAvaliableRealms;
     }
 
+    public List<RealmDTO> getGoodRealms() {
+        List<RealmDTO> realms = getRealms();
+        List<RealmDTO> openRealms = getOpenRealms(realms);
+        List<RealmDTO> closingRealms = getClosingRealms(openRealms);
+        List<RealmDTO> goodClosingRealms = getGoodRealms(closingRealms);
 
-    public List<RealmDTO> getRealms() {
+        goodClosingRealms.sort(Comparator.comparing(RealmDTO::getPlayers));
+        goodClosingRealms.sort(Comparator.comparing(RealmDTO::getRemainingEvents));
+        return goodClosingRealms;
+    }
+
+    public List<RealmDTO> getClosedRealms() {
+        log.info("Getting closed realms.");
+        List<RealmDTO> realms = getRealms();
+
+        return realms.stream()
+                .filter(realm -> !realm.isOpen())
+                .collect(Collectors.toList());
+    }
+
+
+    private List<RealmDTO> getOpenRealms(List<RealmDTO> realms) {
         log.info("Getting open realms.");
+
+        return realms.stream()
+                .filter(RealmDTO::isOpen)
+                .collect(Collectors.toList());
+    }
+
+    private List<RealmDTO> getRealms() {
+        log.info("Getting realms.");
         List<RealmDTO> realms = realmStockClient.getEvents()
                 .stream()
                 .map(RealmDTOMapper::map)
-                .filter(RealmDTO::isOpen)
                 .collect(Collectors.toList());
 
         return removeDuplicates(realms);
@@ -54,6 +83,14 @@ public class EventTrackerService {
 
         return realms.stream()
                 .filter(RealmDTO::isClosing)
+                .collect(Collectors.toList());
+    }
+
+    private List<RealmDTO> getGoodRealms(List<RealmDTO> realms) {
+        log.info("Filtering for good realms.");
+
+        return realms.stream()
+                .filter(RealmDTO::isGood)
                 .collect(Collectors.toList());
     }
 

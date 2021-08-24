@@ -19,14 +19,19 @@ public class RealmDTO {
     private String ip;
 
     public boolean isOpen() {
-        return this.getRemainingEvents() > Constants.REMAINING_EVENTS_ON_CLOSED_REALMS;
+        return this.remainingEvents > Constants.REMAINING_EVENTS_ON_CLOSED_REALMS;
     }
 
     public boolean isAvailable() {
-        return this.getPlayers() <= Constants.PLAYER_AMOUNT_THRESHOLD;
+        return this.players < Constants.AVAILABLE_REALM_PLAYER_AMOUNT_THRESHOLD;
     }
 
     public boolean isClosing() {
-        return this.getRemainingEvents() < Constants.REMAINING_EVENTS_ON_CLOSING_REALM_THRESHOLD;
+        return this.remainingEvents < Constants.REMAINING_EVENTS_ON_CLOSING_REALM_THRESHOLD;
+    }
+
+    public boolean isGood() {
+        return this.remainingEvents < Constants.REMAINING_EVENTS_ON_CLOSING_REALM_THRESHOLD &&
+                this.players < Constants.GOOD_REALM_PLAYER_AMOUNT_THRESHOLD;
     }
 }
