@@ -24,7 +24,7 @@ public class EventTrackerService {
         List<RealmDTO> realms = getRealms();
         List<RealmDTO> openRealms = getOpenRealms(realms);
         List<RealmDTO> closingRealms = getClosingRealms(openRealms);
-        List<RealmDTO> closingAvaliableRealms = getAvailableRealms(closingRealms);
+        List<RealmDTO> closingAvaliableRealms = getAvailableOrAboutToCloseRealms(closingRealms);
 
         closingAvaliableRealms.sort(Comparator.comparing(RealmDTO::getPlayers));
         closingAvaliableRealms.sort(Comparator.comparing(RealmDTO::getRemainingEvents));
@@ -60,7 +60,7 @@ public class EventTrackerService {
                 .collect(Collectors.toList());
     }
 
-    private List<RealmDTO> getRealms() {
+    public List<RealmDTO> getRealms() {
         log.info("Getting realms.");
         List<RealmDTO> realms = realmStockClient.getEvents()
                 .stream()
@@ -70,11 +70,11 @@ public class EventTrackerService {
         return removeDuplicates(realms);
     }
 
-    private List<RealmDTO> getAvailableRealms(List<RealmDTO> realms) {
+    private List<RealmDTO> getAvailableOrAboutToCloseRealms(List<RealmDTO> realms) {
         log.info("Filtering for available realms.");
 
         return realms.stream()
-                .filter(RealmDTO::isAvailable)
+                .filter(realm -> realm.isAvailable() || realm.isAlmostClosed())
                 .collect(Collectors.toList());
     }
 

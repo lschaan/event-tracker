@@ -19,8 +19,15 @@ public class EventTrackerController {
         this.eventTrackerService = eventTrackerService;
     }
 
+    @GetMapping("/find")
+    @ApiOperation(value = "List realms.")
+    private ResponseEntity<RealmListResponse> getRealms() {
+        RealmListResponse response = RealmListResponseMapper.map(eventTrackerService.getRealms());
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/find/closing")
-    @ApiOperation(value = "Finds closing realms", notes = "Finds realms that are to close and have at least one open slot.\nUseful for O3 and Wine Cellar events.")
+    @ApiOperation(value = "Finds closing realms", notes = "Finds realms that are somewhat about to close and have at least one open slot, or realms that are very close to closing.\nUseful for O3 and Wine Cellar events.")
     public ResponseEntity<RealmListResponse> getClosingRealms() {
         RealmListResponse response = RealmListResponseMapper.map(eventTrackerService.getClosingRealms());
         return ResponseEntity.ok(response);
