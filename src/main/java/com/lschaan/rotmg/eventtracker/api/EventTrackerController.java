@@ -42,7 +42,7 @@ public class EventTrackerController {
 
     @GetMapping("/find/closed")
     @ApiOperation(value = "Finds closed realms.", notes = "Finds realms that have already closed.\nUseful for event that required recently-opened realms.")
-    public ResponseEntity<RealmListResponse> getClosedRealms () {
+    public ResponseEntity<RealmListResponse> getClosedRealms() {
         RealmListResponse response = RealmListResponseMapper.map(eventTrackerService.getClosedRealms());
         return ResponseEntity.ok(response);
     }

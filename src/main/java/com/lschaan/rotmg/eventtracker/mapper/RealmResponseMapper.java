@@ -7,10 +7,10 @@ public class RealmResponseMapper {
 
     public static RealmResponse map(final RealmDTO realmDTO) {
         return RealmResponse.builder()
-                .name(realmDTO.getName())
-                .players(realmDTO.getPlayers())
-                .remainingEvents(realmDTO.getRemainingEvents())
-                .server(realmDTO.getServer())
-                .build();
+            .name(realmDTO.getName())
+            .players(realmDTO.getPlayers())
+            .remainingEvents(realmDTO.getRemainingEvents())
+            .server(realmDTO.getServer())
+            .build();
     }
 }

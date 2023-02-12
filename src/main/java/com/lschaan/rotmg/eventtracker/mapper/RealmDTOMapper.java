@@ -25,14 +25,14 @@ public class RealmDTOMapper {
         int remainingEvents = getRemainingEvents(split);
 
         return RealmDTO.builder()
-                .ip(split[IP_POSITION])
-                .name(split[NAME_POSITION])
-                .server(split[SERVER_POSITION])
-                .players(playerAmount)
-                .remainingEvents(remainingEvents)
-                .time(split[TIME_POSITION])
-                .uuid(split[UUID_POSITION])
-                .build();
+            .ip(split[IP_POSITION])
+            .name(split[NAME_POSITION])
+            .server(split[SERVER_POSITION])
+            .players(playerAmount)
+            .remainingEvents(remainingEvents)
+            .time(split[TIME_POSITION])
+            .uuid(split[UUID_POSITION])
+            .build();
 
     }
 

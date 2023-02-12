@@ -30,12 +30,16 @@ public class RealmDTO {
         return this.remainingEvents < Constants.REMAINING_EVENTS_ON_CLOSING_REALM_THRESHOLD;
     }
 
-    public boolean isAlmostClosed() {
+    public boolean isAboutToClose() {
         return this.remainingEvents < Constants.REMAINING_EVENTS_ON_ALMOST_CLOSED_REALM_THRESHOLD;
     }
 
     public boolean isGood() {
         return this.remainingEvents < Constants.REMAINING_EVENTS_ON_GOOD_REALM_THRESHOLD &&
-                this.players < Constants.GOOD_REALM_PLAYER_AMOUNT_THRESHOLD;
+            this.players < Constants.GOOD_REALM_PLAYER_AMOUNT_THRESHOLD;
+    }
+
+    public boolean isAvailableOrAboutAboutToClose() {
+        return isAvailable() || isAboutToClose();
     }
 }
