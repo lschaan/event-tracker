@@ -1,5 +1,6 @@
 package com.lschaan.rotmg.eventtracker.client;
 
+import com.lschaan.rotmg.eventtracker.client.response.EventHistoryResponse;
 import com.lschaan.rotmg.eventtracker.dto.RealmDTO;
 import com.lschaan.rotmg.eventtracker.mapper.RealmDTOMapper;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -20,7 +21,7 @@ public class RealmStockClient {
     }
 
     public List<RealmDTO> getRealms() {
-        return Arrays.stream(client.getEvents().split("\n"))
+        return Arrays.stream(client.getEvents().getValue().split("\n"))
             .map(RealmDTOMapper::map)
             .distinct()
             .collect(Collectors.toList());
@@ -30,6 +31,6 @@ public class RealmStockClient {
     public interface Client {
 
         @GetMapping("/EventHistory")
-        String getEvents();
+        EventHistoryResponse getEvents();
     }
 }
